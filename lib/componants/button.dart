@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Button extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
-  bool isLoading;
+  final bool isLoading;
   final Color color;
   final String? imagePath;
-  double? width;
-  double? height;
+  final double? width;
+  final double? height;
 
   Button({
     super.key,
@@ -23,7 +24,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap, // Disable tap when loading
       child: Container(
         height: height ?? 55,
         width: width ?? 330,
@@ -32,30 +33,31 @@ class Button extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Stack(
-          alignment: Alignment.center, // Centers the text within the container
+          alignment: Alignment.center, // Centers the text or loader
           children: [
             Center(
               child: isLoading
-                  ? const CircularProgressIndicator(
+                  ? LoadingAnimationWidget.waveDots(
                 color: Colors.white,
+                size: 30,
               )
                   : Text(
                 title,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
             ),
-            Positioned(
-              right: 20, // Adjust as needed for spacing
-              child: imagePath != null
-                  ? Image.asset(
-                imagePath!,
-                scale: 4,
-              )
-                  : const SizedBox(), // Placeholder if no image
-            ),
+            if (imagePath != null)
+              Positioned(
+                right: 20, // Adjust as needed
+                child: Image.asset(
+                  imagePath!,
+                  scale: 4,
+                ),
+              ),
           ],
         ),
       ),

@@ -29,7 +29,9 @@ class _FirstScreenState extends State<FirstScreen> {
           ),
           floatingActionButton: GestureDetector(
             onTap: () {
-
+              // int lastNumber = numberList.last.toInt();
+              // print('last number ------->$lastNumber');
+              // numberList.add(lastNumber+1);
               value.addNumber();
 
             },
